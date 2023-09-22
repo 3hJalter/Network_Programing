@@ -1,0 +1,2 @@
+1. All data files must be guaranteed to be written in the correct format.
+2. When cloning to the local computer, change the path of the data files in the define section in the main function to their current path.
