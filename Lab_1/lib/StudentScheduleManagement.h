@@ -386,7 +386,6 @@ void freeStudentRegistrationList(DynamicList *studentRegistrationList) {
     freeDynamicList(studentRegistrationList);
 }
 
-// TODO: Get ClassId list from StudentRegistration DynamicList by UserId
 DynamicList *GetClassIdListByUserId(DynamicList *studentRegistrationList, char *userId) {
     DynamicList *classIdList = initializeList(sizeof(char) * 20);
     for (int i = 0; i < studentRegistrationList->size; i++) {
