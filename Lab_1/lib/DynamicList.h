@@ -45,6 +45,20 @@ void *getElement(DynamicList *list, size_t index) {
     return (char *)list->data + (index * list->elementSize);
 }
 
+// find element by its data
+void *findElement(DynamicList *list, const void *element) {
+    size_t index = 0;
+    while (index < list->size) {
+        void *current = (char *)list->data + (index * list->elementSize);
+        if (memcmp(current, element, list->elementSize) == 0) {
+            return current;
+        }
+        index++;
+    }
+    return NULL;
+}
+
+
 // Remove element at index
 void removeElementByIndex(DynamicList *list, size_t index) {
     if (index >= list->size) {
@@ -107,6 +121,9 @@ void addToDynamicList(DynamicList *list, const void *element, size_t elementSize
 }
 
 // Function to release list memory when no longer needed
+// Currently work list the data is not a pointer point to another pointer
+// For example: if data is also a DynamicList pointer, this function will not work
+// Then you need to customize the free function for that data type before call this function
 void freeDynamicList(DynamicList *list) {
     free(list->data);
     list->data = NULL;
