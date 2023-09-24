@@ -85,7 +85,7 @@ void onLogin() {
 
 void displayMainMenuScreen() {
     int choice;
-    DynamicList *classIdList = GetClassIdListByUserId(studentRs, user->username);
+    DynamicList *classIdList = GetStudentRegistrationListByUserId(studentRs, user->username);
     do {
         onInitScreen();
         printf("------------------- Main screen ------------------\n");

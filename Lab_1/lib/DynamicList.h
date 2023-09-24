@@ -89,18 +89,17 @@ void addToDynamicList(DynamicList *list, const void *element, size_t elementSize
     }
 
     if (list->size >= list->capacity) {
-        // If the list is full, double the list size
+        // If the list is full, double the list size using re-alloc
         size_t new_capacity = list->capacity * 2;
-        void *new_data = malloc(new_capacity * list->elementSize);
+        void *new_data = realloc(list->data, new_capacity * list->elementSize);
         if (new_data == NULL) {
             fprintf(stderr, "Memory allocation error\n");
             exit(1);
         }
-        memcpy(new_data, list->data, list->size * list->elementSize);
-        free(list->data);
         list->data = new_data;
         list->capacity = new_capacity;
     }
+
     // Add new element to the list
     void *target = (char *)list->data + (list->size * list->elementSize);
     memcpy(target, element, list->elementSize);
