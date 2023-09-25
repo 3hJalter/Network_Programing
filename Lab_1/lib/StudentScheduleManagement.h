@@ -386,7 +386,7 @@ void freeStudentRegistrationList(DynamicList *studentRegistrationList) {
     freeDynamicList(studentRegistrationList);
 }
 
-DynamicList *GetStudentRegistrationListByUserId(DynamicList *studentRegistrationList, char *userId) {
+DynamicList *GetClassIdListByUserId(DynamicList *studentRegistrationList, char *userId) {
     DynamicList *classIdList = initializeList(sizeof(char) * 20);
     for (int i = 0; i < studentRegistrationList->size; i++) {
         Student_R *studentRegistration = (Student_R *) getElement(studentRegistrationList, i);
