@@ -3,9 +3,9 @@
 #include "lib/StudentScheduleManagement.h"
 #include "lib/DynamicList.h"
 
-#define studentRegisterPath "D:\\Code\\Workspace\\C\\Network_Program\\Lab_1\\textData\\student_registration.txt"
-#define courseSchedulePath "D:\\Code\\Workspace\\C\\Network_Program\\Lab_1\\textData\\course_schedule.txt"
-#define userAccountPath "D:\\Code\\Workspace\\C\\Network_Program\\Lab_1\\textData\\User-account.txt"
+#define studentRegisterPath "/home/hoang-ubuntu/CLionProjects/Network_Programing/Lab_1/textData/student_registration.txt"
+#define courseSchedulePath "/home/hoang-ubuntu/CLionProjects/Network_Programing/Lab_1/textData/course_schedule.txt"
+#define userAccountPath "/home/hoang-ubuntu/CLionProjects/Network_Programing/Lab_1/textData/User-account.txt"
 
 char strInput[20];
 User *user;
@@ -41,12 +41,16 @@ void onInitScreen() {
 }
 
 void onExitScreen() {
+#ifdef _WIN32
     system("cls");
+#else
+    system("clear");
+#endif
     printf("Exit screen\n");
 }
 
 void displayLoginScreen() {
-    int choice;
+    long int choice;
     do {
         onInitScreen();
         printf("----- Welcome to Student Schedule Management -----\n");
@@ -54,7 +58,9 @@ void displayLoginScreen() {
         printf("| 2. Exit Screen                                 |\n");
         printf("--------------------------------------------------\n");
         printf("--> Enter your choice: ");
-        choice = strtol(gets(strInput), NULL, 10);
+        if(fgets(strInput, sizeof(strInput), stdin) != NULL) {
+            choice = strtol(strInput, NULL, 10);
+        }
         switch (choice) {
             case 1:
                 onLogin();
@@ -84,7 +90,7 @@ void onLogin() {
 }
 
 void displayMainMenuScreen() {
-    int choice;
+    long int choice;
     DynamicList *classIdList = GetClassIdListByUserId(studentRs, user->username);
     do {
         onInitScreen();
@@ -94,7 +100,9 @@ void displayMainMenuScreen() {
         printf("| 2. Exit screen                                 |\n");
         printf("--------------------------------------------------\n");
         printf("--> Enter your choice: ");
-        choice = strtol(gets(strInput), NULL, 10);
+        if(fgets(strInput, sizeof(strInput), stdin) != NULL) {
+            choice = strtol(strInput, NULL, 10);
+        }
         switch (choice) {
             case 1:
                 printf("- Enter day of week: ");

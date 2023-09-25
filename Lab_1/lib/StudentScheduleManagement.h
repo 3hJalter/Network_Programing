@@ -209,7 +209,7 @@ DynamicList *GetCourseList(char *path) {
                 if (sscanf(token, "%d-%d", &startWeek, &endWeek) == 2) {
                     addWeekRange(weekStudy, startWeek, endWeek);
                 } else if (isdigit(token[0])) {
-                    int week = strtol(token, NULL, 10);
+                    long int week = strtol(token, NULL, 10);
                     addToDynamicList(weekStudy, &week, sizeof(int));
                 } else if (isalpha(token[0])) {
                     room = malloc(sizeof(char) * strlen(token));
