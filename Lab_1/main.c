@@ -2,10 +2,7 @@
 #include <stdlib.h>
 #include "lib/StudentScheduleManagement.h"
 #include "lib/DynamicList.h"
-
-#define studentRegisterPath "/home/hoang-ubuntu/CLionProjects/Network_Programing/Lab_1/textData/student_registration.txt"
-#define courseSchedulePath "/home/hoang-ubuntu/CLionProjects/Network_Programing/Lab_1/textData/course_schedule.txt"
-#define userAccountPath "/home/hoang-ubuntu/CLionProjects/Network_Programing/Lab_1/textData/User-account.txt"
+#include "lib/Path.h"
 
 char strInput[20];
 User *user;

@@ -196,9 +196,9 @@ DynamicList *GetCourseList(char *path) {
             char *token = NULL;
             token = strtok(theRest, ",");
             dayStudy = token[0] - '0';
-            startAt = token[2] - '0';
+            startAt = 6 * ((token[1] - '0') - 1) + (token[2] - '0');
             token = strtok(NULL, ",");
-            endAt = token[2] - '0';
+            endAt = 6 * ((token[1] - '0') - 1) + (token[2] - '0');
             DynamicList *weekStudy = initializeList(sizeof(int));
             char *room = NULL;
             // For converting week-week format
@@ -252,8 +252,14 @@ DynamicList *GetCourseListByDayStudyAndClassIdList(DynamicList *courseList, DayO
 // Function to Print Course
 void PrintCourseSchedule(Course_S *course) {
     char *weekString = GetWeekStringFromList(course->weekStudy);
+    int startAt = course->startAt;
+    int endAt = course->endAt;
+    if (startAt > 6) {
+        startAt -= 6;
+        endAt -= 6;
+    }
     printf("|%-8s|%-20s|%-10s|%-10s|%d-%-6d|%-21s|%-8s|\n", course->courseId, course->courseName,
-           ConvertDayEnumToString(course->dayStudy), course->startAt < 3 ? "AM" : "PM", course->startAt, course->endAt,
+           ConvertDayEnumToString(course->dayStudy), course->startAt <= 6 ? "Morning" : "Afternoon", startAt, endAt,
            weekString, course->room);
     printf("|--------|--------------------|----------|----------|--------|---------------------|--------|\n");
     free(weekString);
