@@ -24,6 +24,9 @@ int main() {
     studentRs = GetStudentRegistrationList(studentRegisterPath);
     courseSs = GetCourseList(courseSchedulePath);
     // MAIN
+#if defined(__linux__) || defined(__unix__)
+    printf("This is Linux, Enter anything to open system\n");
+#endif
     displayLoginScreen();
     // OUT MAIN
     freeCourseList(courseSs);
@@ -33,7 +36,14 @@ int main() {
 }
 
 void onInitScreen() {
+#ifdef _WIN32
     fflush(stdin);
+#else
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+        // Read and discard characters until a newline or EOF is encountered
+    }
+#endif
     printf("--------------------\n");
 }
 
@@ -116,6 +126,9 @@ void displayMainMenuScreen() {
                 freeDynamicList(classIdList);
                 classIdList = NULL;
                 onExitScreen();
+#if defined(__linux__) || defined(__unix__)
+                printf("Enter anything to return continue\n");
+#endif
                 break;
             default:
                 printf("--> Error: Invalid choice\n");
