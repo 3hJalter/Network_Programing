@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib/StudentScheduleManagement.h"
-#include "lib/DynamicList.h"
-#include "lib/Path.h"
+#include "../lib/StudentScheduleManagement.h"
+#include "../lib/Path.h"
 
 char strInput[20];
 User *user;

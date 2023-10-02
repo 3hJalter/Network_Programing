@@ -2,7 +2,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # Specific files
-Lab_1/lib/Path.h
+lib/Path.h
 
 # User-specific stuff
 .idea/**/workspace.xml

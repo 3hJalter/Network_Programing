@@ -3,9 +3,9 @@ project(NetworkProgram C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(NetworkProgram Lab_1/main.c Lab_1/lib/DayOfWeek.h Lab_1/lib/StudentScheduleManagement.h Lab_1/lib/DynamicList.h
-        Lab_1/lib/Path.h
-        Lab_1/lib/Path.h
+add_executable(NetworkProgram Lab_1/main.c lib/DayOfWeek.h lib/StudentScheduleManagement.h lib/DynamicList.h
+        lib/Path.h
+        lib/Path.h
         Lab_2/ExampleSource/EchoServer.c
         Lab_2/ExampleSource/EchoClient.c
         Testing/testSocket.c
