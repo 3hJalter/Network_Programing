@@ -5,7 +5,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-#define MAX_LINE 4096 /*max text line length*/
+#define MAX_LINE 4096 /*max text lineHH length*/
 #define SERV_PORT 3001 /*port*/
 
 int

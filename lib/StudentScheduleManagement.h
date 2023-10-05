@@ -409,6 +409,47 @@ typedef struct user_account {
     char password[20];
 } User;
 
+User *UserAuthorized(char* usernameAndPasswordString, char* userAccountPath) {
+    char username[20];
+    char password[20];
+    // Parse username and password from string
+    // Example of string: "username-password"
+
+
+    if (sscanf(usernameAndPasswordString, "%[^-]-%s", username, password) == 2) {
+        FILE *fp;
+        fp = fopen(userAccountPath, "r");
+        if (fp == NULL) {
+            printf("Can not open file\n");
+            return false;
+        }
+        char usernameFromFile[20];
+        char passwordFromFile[20];
+        while (fscanf(fp, "%s %s", usernameFromFile, passwordFromFile) != EOF) {
+            if (strcmp(username, usernameFromFile) == 0) {
+                if (strcmp(password, passwordFromFile) == 0) {
+                    printf("UserLogin successfully\n");
+                    fclose(fp);
+                    User *user = (User *) malloc(sizeof(User));
+                    strcpy(user->username, username);
+                    strcpy(user->password, password);
+                    return user;
+                } else {
+                    printf("--> Error: Wrong password\n");
+                    fclose(fp);
+                    return NULL;
+                }
+            }
+        }
+        printf("--> Error: User not found\n");
+        fclose(fp);
+        return NULL;
+    } else {
+        printf("--> Error: Invalid username and password\n");
+        return NULL;
+    }
+}
+
 User *UserLogin(char *username, char *password, char *path) {
     FILE *fp;
     fp = fopen(path, "r");

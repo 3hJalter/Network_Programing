@@ -7,8 +7,8 @@
 #include <unistd.h>
 
 #define MAX_LINE 4096
-#define SERV_PORT 3001
-#define FILE_SENT "/mnt/d/Code/Workspace/C/Network_Program/Lab_2/Ex2/FileSend.txt"
+#define SERV_PORT 3002
+#define FILE_SENT "/mnt/d/Code/Workspace/C/Network_Program/Lab_2/Ex2/a.jpg"
 
 int main(int argc, char **argv) {
     int sock_fd;

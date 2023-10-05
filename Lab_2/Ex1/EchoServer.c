@@ -39,6 +39,9 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv) 
 
         cli_len = sizeof(cli_addr);
         conn_fd = accept(listen_fd, (struct sockaddr *) &cli_addr, &cli_len);
+        // print the client ip addr
+        
+
         printf("%s\n", "Received request...");
 
         while ((n = recv(conn_fd, buf, MAX_LINE, 0)) > 0) {

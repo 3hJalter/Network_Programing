@@ -5,9 +5,9 @@
 #include <netinet/in.h>
 
 #define MAX_LINE 4096
-#define SERV_PORT 3001
+#define SERV_PORT 3002
 #define LISTEN_Q 8
-#define FILE_RECEIVED "/mnt/d/Code/Workspace/C/Network_Program/Lab_2/Ex2/FileReceive.txt"
+#define FILE_RECEIVED "/mnt/d/Code/Workspace/C/Network_Program/Lab_2/Ex2/b.jpg"
 
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv) {
     int listen_fd, conn_fd;
