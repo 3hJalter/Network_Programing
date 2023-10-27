@@ -29,6 +29,10 @@ Response responseUserAuthorizedFailed = {R_INVALID, "User authorized failed"};
 Response responseReadScheduleFailed = {R_INVALID, "Read schedule failed"};
 
 
+size_t GetResponseSize(){
+    return sizeof(Response);
+}
+
 void AddResponseData(Response *response, char *data) {
     strcpy(response->data, data);
 }

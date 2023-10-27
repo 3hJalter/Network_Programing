@@ -117,9 +117,9 @@ void displayMainMenuScreen() {
                 if (strcmp(dayOfWeekStr, "All") != 0 && strcmp(dayOfWeekStr, "all") != 0) {
                     DayOfWeek dayOfWeek;
                     dayOfWeek = ConvertDayStringToEnum(dayOfWeekStr);
-                    PrintCourseListByDayStudyAndClassIdList(courseSs, dayOfWeek, classIdList);
+                    PrintCourseListByDayStudyAndStudentRegistrationList(courseSs, dayOfWeek, classIdList);
                     break;
-                } else PrintCourseListByClassIdList(courseSs, classIdList);
+                } else PrintCourseListByStudentRegistrationList(courseSs, classIdList);
                 break;
             case 2:
                 freeDynamicList(classIdList);

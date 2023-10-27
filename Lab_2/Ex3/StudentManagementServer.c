@@ -18,10 +18,10 @@
 
 DynamicList *studentRs;
 DynamicList *courseSs;
-DynamicList *classIdList;
+DynamicList *uniStudentRsList;
 User *user;
 
-int main(){
+int main() {
     studentRs = GetStudentRegistrationList(studentRegisterPath);
     courseSs = GetCourseList(courseSchedulePath);
     user = malloc(sizeof(User));
@@ -64,13 +64,40 @@ int main(){
                     user = UserAuthorized(request.requestString, userAccountPath);
                     if (user != NULL) {
                         response = responseSuccess;
+                        // convert user to string
+                        char *userString = ConvertUserToString(user);
+                        strcpy(response.data, userString);
                     } else {
                         response = responseUserAuthorizedFailed;
                     }
                     break;
                 case CHECK_SCHEDULE:
                     response = responseSuccess;
+                    if (strcmp(request.requestString, "All") != 0 && strcmp(request.requestString, "all") != 0) {
+                        DayOfWeek dayOfWeek;
+                        dayOfWeek = ConvertDayStringToEnum(request.requestString);
+                        DynamicList *resultList = GetCourseListByDayStudyAndClassIdList(courseSs, dayOfWeek,
+                                                                                        uniStudentRsList);
+                        strcpy(response.data, ConvertCourseListToJson(resultList));
+                        freeCourseList(resultList);
+//                        PrintCourseListByDayStudyAndStudentRegistrationList(courseSs, dayOfWeek, uniStudentRsList);
+                    } else {
+//                        PrintCourseListByStudentRegistrationList(courseSs, uniStudentRsList);
+                    }
                     break;
+                case GET_STUDENT_REGISTRATION_LIST:
+                    response = responseSuccess;
+                    DynamicList *resultList = GetClassIdListByUserId(studentRs, request.requestString);
+
+//                    strcpy(response.data, ConvertStudentRegistrationListToJson(resultList));
+//                    freeStudentRegistrationList(resultList);
+                    break;
+                case LOGOUT: {
+                    response = responseSuccess;
+                    freeUser(user);
+                    freeStudentRegistrationList(uniStudentRsList);
+                    break;
+                }
                 default:
                     response = responseInvalidRequest;
                     break;
@@ -80,6 +107,8 @@ int main(){
 
             send(conn_fd, responseString, sizeof(char) * strlen(responseString), 0);
             free(responseString);
+            // Clear the buffer
+            memset(buf, 0, sizeof(buf));
         }
 
         if (n < 0) {

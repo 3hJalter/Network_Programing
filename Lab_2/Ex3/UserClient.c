@@ -8,13 +8,14 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
-#include <unistd.h>
 #include "Response.h"
+#include "../../lib/StudentScheduleManagement.h"
 
 #define MAX_LINE 4096
 #define SERV_PORT 3001
 
-
+DynamicList *uniStudentRsList;
+User *user;
 
 void onLogin();
 
@@ -104,6 +105,22 @@ void displayLoginScreen() {
     } while (choice != 2);
 }
 
+char* CreateLoginRequest(char* username, char* password){
+    char *loginString = malloc(sizeof(char) * 50);
+    strcpy(loginString, "LOGIN ");
+    strcat(loginString, username);
+    strcat(loginString, "-");
+    strcat(loginString, password);
+    return loginString;
+}
+
+char * CreateGetStudentRegistrationListRequest(char * username) {
+    char *requestString = malloc(sizeof(char) * 50);
+    strcpy(requestString, "GET_STUDENT_REGISTRATION_LIST ");
+    strcat(requestString, username);
+    return requestString;
+}
+
 void onLogin() {
     char username[20];
     char password[20];
@@ -113,20 +130,31 @@ void onLogin() {
     printf("- Enter password: ");
     scanf("%s", password);
     // concat LOGIN username and password
-    char *loginString = malloc(sizeof(char) * 50);
-    strcpy(loginString, "LOGIN ");
-    strcat(loginString, username);
-    strcat(loginString, "-");
-    strcat(loginString, password);
-    // send to server
+    char *loginString = CreateLoginRequest(username, password);
     send(sock_fd, loginString, strlen(loginString), 0);
     // receive response from server
-    char *responseString = malloc(sizeof(char) * 50);
-    recv(sock_fd, responseString, sizeof(char) * 50, 0);
+    char *responseString = malloc(GetResponseSize());
+    recv(sock_fd, responseString, GetResponseSize(), 0);
     // convert response to response object
     Response response = ConvertStringToResponse(responseString);
     // check response
     if (response.type == R_SUCCESS) {
+        // convert the data to user
+        user = ConvertStringToUser(response.data);
+        char *requestString = CreateGetStudentRegistrationListRequest(user->username);
+        send(sock_fd, requestString, strlen(requestString), 0);
+        // clear response string
+        memset(responseString, 0, GetResponseSize());
+        // receive response from server
+        recv(sock_fd, responseString, GetResponseSize(), 0);
+        // convert response to response object
+        response = ConvertStringToResponse(responseString);
+        if (response.type != R_SUCCESS) {
+            printf("Get student registration list failed\n");
+            return;
+        }
+        // convert the data to student registration list
+        uniStudentRsList = ConvertJsonToStudentRegistrationList(response.data);
         displayMainMenuScreen();
     } else {
         printf("Login failed\n");
@@ -150,16 +178,31 @@ void displayMainMenuScreen() {
                 printf("- Enter day of week: ");
                 char dayOfWeekStr[20];
                 scanf("%s", dayOfWeekStr);
+                char *requestString = malloc(sizeof(char) * 50);
+                strcpy(requestString, "CHECK_SCHEDULE ");
+                strcat(requestString, dayOfWeekStr);
+                // send to server
+                send(sock_fd, requestString, strlen(requestString), 0);
+                // receive response from server
+                char *responseString = malloc(GetResponseSize());
+                recv(sock_fd, responseString, GetResponseSize(), 0);
+                // print response to test
+                Response response = ConvertStringToResponse(responseString);
+                DynamicList *courseSs = ConvertJsonToCourseList(response.data);
 //                if (strcmp(dayOfWeekStr, "All") != 0 && strcmp(dayOfWeekStr, "all") != 0) {
 //                    DayOfWeek dayOfWeek;
 //                    dayOfWeek = ConvertDayStringToEnum(dayOfWeekStr);
-//                    PrintCourseListByDayStudyAndClassIdList(courseSs, dayOfWeek, classIdList);
+//                    PrintCourseListByDayStudyAndStudentRegistrationList(courseSs, dayOfWeek, uniStudentRsList);
 //                    break;
-//                } else PrintCourseListByClassIdList(courseSs, classIdList);
+//                } else PrintCourseListByStudentRegistrationList(courseSs, uniStudentRsList);
+                free(requestString);
+                freeCourseList(courseSs);
+                requestString = NULL;
                 break;
             case 2:
-//                freeDynamicList(classIdList);
-//                classIdList = NULL;
+                freeUser(user);
+//                freeDynamicList(uniStudentRsList);
+//                uniStudentRsList = NULL;
                 onExitScreen();
 #if defined(__linux__) || defined(__unix__)
                 printf("Enter anything to return continue\n");

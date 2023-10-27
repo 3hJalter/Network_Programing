@@ -11,6 +11,8 @@
 typedef enum RequestType {
     LOGIN = 0,
     CHECK_SCHEDULE = 1,
+    GET_STUDENT_REGISTRATION_LIST = 2,
+    LOGOUT = 3,
 } RequestType;
 
 typedef struct Request{
@@ -49,6 +51,10 @@ Request ConvertStringToRequest(char* string) {
         request.type = LOGIN;
     } else if (strcmp(token, "CHECK_SCHEDULE") == 0) {
         request.type = CHECK_SCHEDULE;
+    } else if (strcmp(token, "GET_STUDENT_REGISTRATION_LIST") == 0) {
+        request.type = GET_STUDENT_REGISTRATION_LIST;
+    } else if (strcmp(token, "LOGOUT") == 0) {
+        request.type = LOGOUT;
     } else {
         request.type = -1;
     }
